@@ -21,7 +21,7 @@
             <td >{{ doctor.isHead ? "Да" : "Нет" }}</td>
             <td >
               <button @click="editDoctor(doctor)">Редактировать</button>
-              <button @click="deleteDoctor(doctor.id)">Удалить</button>
+              <button @click="doctorStore.deleteDoctor(doctor.id)">Удалить</button>
             </td>
           </tr>
           </tbody>
@@ -32,23 +32,28 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue';
-
-const doctors = reactive([
-  { id: 1, name: "Иванов Иван Иванович", department: "Кардиологическое", isHead: true },
-  { id: 2, name: "Петров Петр Петрович", department: "Хирургическое", isHead: false },
-]);
+import {computed, reactive} from 'vue';
+import { useDoctorsStore } from '@/stores/doctorsStore'
+const doctorStore = useDoctorsStore()
+// const doctors = reactive([
+//   { id: 1, name: "Иванов Иван Иванович", department: "Кардиологическое", isHead: true },
+//   { id: 2, name: "Петров Петр Петрович", department: "Хирургическое", isHead: false },
+// ]);
 
 const editDoctor = (doctor) => {
   console.log("Редактировать врача", doctor);
 };
 
-const deleteDoctor = (id: number) => {
-  const index = doctors.findIndex((doctor) => doctor.id === id);
-  if (index !== -1) {
-    doctors.splice(index, 1);
-  }
-};
+const doctors = computed(() => {
+  return doctorStore.doctors
+})
+
+// const deleteDoctor = (id) => {
+//   const index = doctors.findIndex((doctor) => doctor.id === id);
+//   if (index !== -1) {
+//     doctors.splice(index, 1);
+//   }
+// };
 </script>
 <style lang="scss">
 $background: #efefef;
