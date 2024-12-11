@@ -1,84 +1,55 @@
 <template>
-  <div class="container">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h1>Медсестры</h1>
-      </div>
-      <div class="panel-body">
-        <table class="table-latitude">
-          <thead>
-          <tr class="thread">
-            <th class="border px-4 py-2 fio" >ФИО</th>
-            <th >Отделение</th>
-            <th >Действие</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="nurse in nurses" :key="nurse.id">
-            <td>{{ nurse.name }}</td>
-            <td>{{ nurse.department }}</td>
-            <td>
-              <button @click="editNurse(nurse)">Редактировать</button>
-              <button @click="nursesStore.deleteNurse(nurse.id)">Удалить</button>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+  <StaffTable
+    title="Медсестры"
+    :data="nurses"
+    :isDoctor="false"
+    :openModal="openModal"
+    :deleteItem="deleteNurse"
+  />
+  <FormModal
+    :isVisible="toggleModal"
+    :staffToEdit="nurseToEdit"
+    role="nurse"
+    @close="closeModal"
+    @edit-staff="editNurse"
+    @add-staff="addNurse"
+  />
 </template>
 
-<script lang="ts" setup>
-import {computed, reactive} from 'vue';
+<script setup>
+import {computed, ref} from 'vue';
 import { useNursesStore } from '@/stores/nursesStore'
+import FormModal from "@/components/FormModal/FormModal.vue";
+import StaffTable from "@/components/StaffTable.vue";
 const nursesStore = useNursesStore()
+const toggleModal = ref(false)
+const nurseToEdit = ref(null)
 
-const editNurse = (nurse) => {
-  console.log("Редактировать врача", nurse);
+const openModal = (nurse) => {
+  if (nurse) {
+    nurseToEdit.value = nurse
+  }
+  toggleModal.value = true
+};
+const closeModal = () => {
+  toggleModal.value = false
+  nurseToEdit.value = null
+}
+
+const editNurse = (newData) => {
+  nursesStore.editNurse(newData)
+}
+
+const addNurse = (newData) => {
+  nursesStore.addNurse(newData)
+}
+
+const deleteNurse = (id) => {
+  nursesStore.deleteNurse(id);
 };
 
 const nurses = computed(() => {
   return nursesStore.nurses
 })
 </script>
-<style lang="scss">
-$background: #efefef;
-$lfs-blue: #006ac6;
-$lfs-yellow: #fab700;
-$lfs-grey: #75787b;
-body {
-  background-color: $background;
-}
-
-.table-latitude {
-  width: 100%;
-  thead {
-    border-top: 2px solid $lfs-yellow;
-    border-bottom: 2px solid $lfs-yellow;
-    th {
-      text-transform: uppercase;
-      text-align: center;
-      padding: 10px;
-      color: $lfs-blue;
-      border: 1px solid $lfs-grey;
-    }
-  }
-  tbody {
-    tr {
-      border-bottom: 1px solid $lfs-grey;
-      color: $lfs-grey;
-      td {
-        padding: 10px;
-        border: 1px solid $lfs-grey;
-      }
-      th {
-        padding-left: 10px;
-        border: 1px solid red;
-      }
-    }
-  }
-}
-
-</style>
 

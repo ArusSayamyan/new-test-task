@@ -17,18 +17,16 @@ export const useNursesStore = defineStore('nurses', {
       this.nurses.push(newNurse);
     },
 
-    editNurse(id, name, department) {
-      const nurses = this.nurses.find(d => d.id === id);
+    editNurse(data) {
+      const nurses = this.nurses.find(nurse => nurse.id === data.id);
       if (nurses) {
-        nurses.name = name;
-        nurses.department = department;
+        nurses.name = data.name;
+        nurses.department = data.department;
       }
     },
 
     deleteNurse(id) {
-      console.log('id', id)
       this.nurses = this.nurses.filter(nurse => nurse.id !== id);
-      console.log('this.nurses', this.nurses)
     },
   },
 });

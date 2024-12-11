@@ -17,18 +17,17 @@ export const useDoctorsStore = defineStore('doctors', {
       this.doctors.push(newDoctor);
     },
 
-    editDoctor(id, name, department) {
-      const doctor = this.doctors.find(d => d.id === id);
+    editDoctor(editedDoctor) {
+      const doctor = this.doctors.find(doc => doc.id === editedDoctor.id);
       if (doctor) {
-        doctor.name = name;
-        doctor.department = department;
+        doctor.name = editedDoctor.name;
+        doctor.department = editedDoctor.department;
+        doctor.isHead = editedDoctor.isHead;
       }
     },
 
     deleteDoctor(id) {
-      console.log('id', id)
       this.doctors = this.doctors.filter(doctor => doctor.id !== id);
-      console.log('this.doctors', this.doctors)
     },
   },
 });

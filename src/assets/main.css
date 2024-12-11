@@ -1,7 +1,4 @@
 @import './base.css';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 #app {
   max-width: 1280px;
@@ -16,6 +13,21 @@ a,
   color: hsla(160, 100%, 37%, 1);
   transition: 0.4s;
   padding: 3px;
+}
+.primary_button {
+  background-color: #006ac6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: gray;
+  }
 }
 
 @media (hover: hover) {
